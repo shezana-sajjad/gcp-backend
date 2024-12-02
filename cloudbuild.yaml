@@ -21,10 +21,10 @@ steps:
   - '-c'
   - |
     echo "Configuring gcloud..."
-    gcloud config set project cloud-resume-sammreen
+    gcloud config set project cloud-resume-shezana
     gcloud config set functions/region us-central1
     echo "Deploying Cloud Function..."
-    gcloud functions deploy count-func02 \
+    gcloud functions deploy counter \
       --region=us-central1 \
       --runtime=python311 \
       --trigger-http \
