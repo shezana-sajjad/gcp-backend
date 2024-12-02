@@ -1,0 +1,37 @@
+steps:
+- name: 'hashicorp/terraform:light'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+    echo "Initializing Terraform..."
+    terraform init -input=false -no-color
+
+- name: 'hashicorp/terraform:light'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+    echo "Applying Terraform configuration..."
+    terraform apply -auto-approve -input=false -no-color
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+    echo "Configuring gcloud..."
+    gcloud config set project cloud-resume-sammreen
+    gcloud config set functions/region us-central1
+    echo "Deploying Cloud Function..."
+    gcloud functions deploy count-func02 \
+      --region=us-central1 \
+      --runtime=python311 \
+      --trigger-http \
+      --source=/workspace \
+      --entry-point=visitor_counter
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+timeout: '900s'
