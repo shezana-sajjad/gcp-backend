@@ -38,3 +38,4 @@ def counter(request):
         response = make_response(jsonify({"message": "Visitor count updated"}))
         response.headers = headers
         return response
+        
